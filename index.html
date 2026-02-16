@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: #04AA6D;
+  border: 2px solid #04AA6D;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button:hover {
+  color: #04AA6D;
+  background-color: transparent;
+}
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 20px auto;
+  padding: 45px;
+  border-radius: 8px;
+  width: 90%;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(-45deg, #212121, #327f32);
+    background-attachment: fixed;
+    overflow-y: auto;
+}
+</style>
+</head>
+<body>
+    <div id="content" class="markdown-body">Loading...</div>
+    <script>
+    async function readme(file='README.md') {
+        const url = 'https://raw.githubusercontent.com/YideBN/'+window.location.pathname.replace(/^\/|\/$/g, '')+'/main/'+file;
+        const response = await fetch(url);
+        document.getElementById('content').innerHTML = marked.parse(await response.text());
+        document.querySelectorAll('#content a').forEach(a => {
+          a.onclick = (e) => {
+            e.preventDefault();
+            const href = a.getAttribute('href');
+            if (href.endsWith('.md')) readme(href.split('/').pop());
+            else if (href.startsWith('http')) window.open(href, '_blank');
+          };
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => readme('README.md'));
+    </script>
+    
+    <button class="button" onclick="window.location.href='https://github.com/YideBN/'+window.location.pathname.replace(/^\/|\/$/g, '')+'/releases'">Download</button>
+</body>
+
+</html>
